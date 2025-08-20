@@ -7,13 +7,13 @@ const { errorHandler } = auth;
 
 module.exports.registerUser = (req, res) => {
 	if (typeof req.body.firstName !== 'string' || typeof req.body.lastName !== 'string') {
-        return res.status(400).send(false);
+        return res.status(400).json(false);
     } else if (!req.body.email.includes("@")){
-        return res.status(400).send({error: 'Email invalid'});
+        return res.status(400).json({error: 'Email invalid'});
     } else if (req.body.password.length < 8) {
-        return res.status(400).send({error: 'Password must be atleast 8 characters'});
+        return res.status(400).json({error: 'Password must be atleast 8 characters'});
     } else if (req.body.mobileNo.length !== 11){
-        return res.status(400).send({error: 'Mobile number invalid'});
+        return res.status(400).json({error: 'Mobile number invalid'});
     } else {
         let newUser = new User({
             firstName : req.body.firstName,
@@ -23,7 +23,7 @@ module.exports.registerUser = (req, res) => {
             mobileNo : req.body.mobileNo
         })
         return newUser.save()
-        .then((result) => res.status(201).send({
+        .then((result) => res.status(201).json({
             message: 'Registered Successfully'
         }))
         .catch(error => errorHandler(error, req, res));
@@ -35,20 +35,20 @@ module.exports.loginUser = (req, res) => {
         return User.findOne({ email : req.body.email })
     .then(result => {
         if(result == null){
-            return res.status(404).send({ error: "No Email Found"});
+            return res.status(404).json({ error: "No Email Found"});
         } else {
             const isPasswordCorrect = bcrypt.compareSync(req.body.password, result.password);
             if (isPasswordCorrect) {
-                return res.status(200).send({ access : auth.createAccessToken(result)});
+                return res.status(200).json({ access : auth.createAccessToken(result)});
             } else {
-                return res.status(401).send({ error: "Email and password do not match"});
+                return res.status(401).json({ error: "Email and password do not match"});
             }
         }
     })
     .catch(error => errorHandler(error, req, res));
 
     } else {
-         return res.status(400).send({ error: "Invalid Email"});
+         return res.status(400).json({ error: "Invalid Email"});
     }
 };
 
