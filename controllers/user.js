@@ -67,15 +67,13 @@ module.exports.getUserDetails = (req, res) => {
 }
 
 module.exports.updatePassword= (req, res) => {
-    const newPassword = req.user.newPassword;
+    const newPassword = req.body.newPassword;
     const newHashedPassword = bcrypt.hashSync(newPassword, 10);
 
-    User.findByIdAndUpdate(
-        req.user.id,
-        { password: newHashedPassword }
-    );
-
-    return res.status(201).json({ message: "Password reset successfully." });
+    return User.findByIdAndUpdate(req.user.id, { password: newHashedPassword })
+    .then(newPassword => {res.status(201).json({ message: "Password reset successfully." })
+    })
+    .catch(error => errorHandler(error, req, res));  
 }
 
 module.exports.setAsAdmin = (req, res) => {
@@ -85,7 +83,7 @@ module.exports.setAsAdmin = (req, res) => {
         { new: true, runValidators: true }
     ).then((updatedUser) => {
         if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
 
         return res.status(200).json({
