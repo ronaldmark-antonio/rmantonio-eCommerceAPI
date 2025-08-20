@@ -56,10 +56,10 @@ module.exports.getUserDetails = (req, res) => {
     return User.findById(req.user.id).select("-password")
         .then(user => {
             if (!user) {
-                return res.status(404).send({error: "User not found."});
+                return res.status(404).json({error: "User not found."});
             }
 
-            return res.status(200).send({
+            return res.status(200).json({
                 user: user
             });
         })
@@ -71,7 +71,7 @@ module.exports.updatePassword= (req, res) => {
     const newHashedPassword = bcrypt.hashSync(newPassword, 10);
 
     return User.findByIdAndUpdate(req.user.id, { password: newHashedPassword })
-    .then(newPassword => {res.status(201).send({ message: "Password reset successfully." })
+    .then(newPassword => {res.status(201).json({ message: "Password reset successfully." })
     })
     .catch(error => errorHandler(error, req, res));  
 }
@@ -83,10 +83,10 @@ module.exports.setAsAdmin = (req, res) => {
         { new: true, runValidators: true }
     ).then((updatedUser) => {
         if (!updatedUser) {
-            return res.status(404).send({ error: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
 
-        return res.status(200).send({
+        return res.status(200).json({
             updatedUser: updatedUser
         });
     }).catch(err => errorHandler(err, req, res));
