@@ -21,7 +21,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-mongoose.connect(process.env.MONGODB_STRING)
+mongoose.connect("mongodb+srv://admin:admin123@b561-senas.8itpqdp.mongodb.net/ECommerceAPI?retryWrites=true&w=majority&appName=B561-Senas")
 mongoose.connection.once('open', () => console.log('Now connected to MongoDB Atlas.'))
 
 app.use("/users", userRoutes);
