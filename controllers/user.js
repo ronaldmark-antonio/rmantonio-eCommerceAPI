@@ -30,28 +30,6 @@ module.exports.registerUser = (req, res) => {
     }
 };
 
-// module.exports.loginUser = (req, res) => {
-//     if (req.body.email.includes("@")) {
-//         return User.findOne({ email : req.body.email })
-//             .then(result => {
-//                 if(result == null){
-//                     return res.status(404).json({ error: "No Email Found"});
-//                 } else {
-//                     const isPasswordCorrect = bcrypt.compareSync(req.body.password, result.password);
-//                     if (isPasswordCorrect) {
-//                         return res.status(200).json({ access : auth.createAccessToken(result)});
-//                     } else {
-//                         return res.status(401).json({ error: "Email and password do not match"});
-//                     }
-//                 }
-//             })
-//             .catch(error => errorHandler(error, req, res));
-
-//     } else {
-//          return res.status(400).json({ error: "Invalid Email"});
-//     }
-// };
-
 module.exports.loginUser = (req, res) => {
     if (!req.body.email || !req.body.password) {
         return res.status(400).json({ error: "Email and password must be provided" });
