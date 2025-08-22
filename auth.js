@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+const JWT_SECRET = process.env.JWT_SECRET
 
 module.exports.createAccessToken = (user) => {
     const data = {
@@ -9,7 +9,7 @@ module.exports.createAccessToken = (user) => {
         isAdmin: user.isAdmin
     };
 
-    return jwt.sign(data, JWT_SECRET_KEY, {});
+    return jwt.sign(data, JWT_SECRET, {});
 }
 
 module.exports.verify = (req, res, next) => {
@@ -21,7 +21,7 @@ module.exports.verify = (req, res, next) => {
         });
     } else {
         token = token.slice(7, token.length);
-        jwt.verify(token, JWT_SECRET_KEY, function (err, decodedToken) {
+        jwt.verify(token, JWT_SECRET, function (err, decodedToken) {
             if (err) {
                 // Zuitt API return status 200... lol?
                 return res.status(403).json({
