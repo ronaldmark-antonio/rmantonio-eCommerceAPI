@@ -1,32 +1,32 @@
-Capstone 2 Demo App Overview:
-Application Name: FusionTechPro (Gadget E-Commerce API)
+Capstone 2 Demo App Overview: <br>
+Application Name: FusionTechPro (Gadget E-Commerce API) <br>
 
-Team Members:
-1.Jerry Señas
-2.Ronald Mark Antonio 
+Team Members: <br>
+• Student-1 Jerry Señas <br> 
+• Student-2 Ronald Mark Antonio <br>
 
-User Credentials:
-1.Admin User
-email: admin@mail.com
-password: admin123
-2.Dummy Customer
-email: jamesDoe@mail.com
-password: sample123
+User Credentials: <br>
+• Admin User <br> 
+email: admin@mail.com <br>
+password: admin123 <br>
+• Dummy Customer <br>
+email: jamesDoe@mail.com <br>
+password: sample123 <br>
 
-Features by Student-1
-User Resources:
-1.Retrieve User Details
-2.Set user as admin (Admin only)
-3.Update Password
-4.Update Product information (Admin only)
-5.Archive Product (Admin only)
-6.Activate Product (Admin only)
+Features by Student-1 <br>
+User Resources: <br> 
+• Retrieve User Details <br>
+• Set user as admin (Admin only) <br>
+• Update Password <br>
+• Update Product information (Admin only) <br>
+• Archive Product (Admin only) <br>
+• Activate Product (Admin only) <br>
 
-Features by Student-2
-User Resources:
-1.User registration
-2.User authentication
-3.Create Product (Admin only)
-4.Retrieve all products
-5.Retrieve all active products
-6.Retrieve single product
+Features by Student-2 <br>
+User Resources: <br>
+• User registration <br>
+• User authentication <br>
+• Create Product (Admin only) <br>
+• Retrieve all products <br>
+• Retrieve all active products <br>
+• Retrieve single product <br>
