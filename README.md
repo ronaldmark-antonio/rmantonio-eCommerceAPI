@@ -16,10 +16,17 @@ password: sample123
 Features by Student-1
 User Resources:
 1.Retrieve User Details
-2.Set user as admin(Admin only)
+2.Set user as admin (Admin only)
 3.Update Password
+4.Update Product information (Admin only)
+5.Archive Product (Admin only)
+6.Activate Product (Admin only)
 
 Features by Student-2
 User Resources:
 1.User registration
 2.User authentication
+3.Create Product (Admin only)
+4.Retrieve all products
+5.Retrieve all active products
+6.Retrieve single product
