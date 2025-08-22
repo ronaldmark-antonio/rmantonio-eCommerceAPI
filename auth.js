@@ -54,9 +54,7 @@ module.exports.errorHandler = (err, req, res, next) => {
     const errorMessage = err.message || 'Internal Server Error';
 
     res.status(statusCode).json({
-        error: {
-            error: errorMessage,
-            details: err.details
-        }
+        error: errorMessage,
+        details: err
     });
 };
