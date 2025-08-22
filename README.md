@@ -1,5 +1,5 @@
 Capstone 2 Demo App Overview: <br>
-Application Name: FusionTechPro (Gadget E-Commerce) <br>
+Application Name: FusionTechPro <br>
 
 Team Members: <br>
 • Student-1 Jerry Señas <br> 
