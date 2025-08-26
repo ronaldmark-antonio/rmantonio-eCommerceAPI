@@ -3,18 +3,16 @@
 
 <h3>Team Members:</h3>
 <ul>
-	<li>Student-1 Jerry Señas<li>
-	<li>Student-2 Ronald Mark Antonio<li>
+	<li>Student-1 Jerry Señas</li>
+	<li>Student-2 Ronald Mark Antonio</li>
 </ul>
 
 <h3>User Credentials:</h3>
 <ul>
 	<li>Admin User</li>
-	<p>email: admin@mail.com</p>
-	<p>password: admin123 </p>
+	<p>email: admin@mail.com &nbsp; password: admin123 </p>
 	<li>Dummy Customer</li>
-	<p>email: jamesDoe@mail.com </p>
-	<p>password: sample123</p>
+	<p>email: jamesDoe@mail.com &nbsp; password: sample123</p>
 </ul>
 
 <h3>Features by Student-1</h3>
