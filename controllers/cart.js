@@ -24,12 +24,11 @@ module.exports.addToCart = (req, res) => {
     .then((cart) => {
         let userCart = {};
         if (!cart) {
-            let newCart = new Cart({
+            userCart = new Cart({
                 userId: req.user.id,
                 cartItems: [],
                 totalPrice: 0
             });
-            userCart = newCart.save().then(result => result)
         } else {
             userCart = cart
         }
