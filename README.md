@@ -10,9 +10,9 @@
 <h3>User Credentials:</h3>
 <ul>
 	<li>Admin User</li>
-	<p>email: admin@mail.com &nbsp; password: admin123 </p>
+	<p>email: admin@mail.com<br>password: admin123</p>
 	<li>Dummy Customer</li>
-	<p>email: jamesDoe@mail.com &nbsp; password: sample123</p>
+	<p>email: jamesDoe@mail.com<br>password: sample123</p>
 </ul>
 
 <h3>Features by Student-1</h3>
