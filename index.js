@@ -27,7 +27,7 @@ mongoose.connection.once('open', () => console.log('Now connected to MongoDB Atl
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 // app.use("/orders", orderRoutes);
-// app.use("/cart", cartRoutes);
+app.use("/cart", cartRoutes);
 
 if(require.main === module) {
     app.listen( process.env.PORT || 3000, () => {
