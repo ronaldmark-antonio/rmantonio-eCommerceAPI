@@ -129,3 +129,39 @@ module.exports.activateProduct = (req, res) => {
         })
     }).catch(err => errorHandler(err, req, res));
 }
+
+module.exports.searchProduct = (req, res) => {
+    let productName = req.body.name;
+    if (!productName) {
+        return res.status(400).json({ message: "Product name is required" });
+    }
+
+    Product.find({ name: { $regex: productName, $options: "i" }})
+    .then(product => {
+        if (product.length > 0) {
+            return res.status(200).json(product);
+        } else {
+            return res.status(404).json({ message: "No product found" });
+        }
+    })
+    .catch(error => errorHandler(error, req, res));
+}
+
+module.exports.searchByPrice = (req, res) => {
+    let productMinPrice = req.body.minPrice;
+    let productMaxPrice = req.body.maxPrice;
+
+    if (typeof productMinPrice !== 'number'|| typeof productMaxPrice !== 'number') {
+        return res.status(400).json({ message: "Invalid MinPrice or MaxPrice" });
+    } 
+    
+    Product.find({ price: { $gte: productMinPrice, $lte: productMaxPrice } })
+    .then(product => {
+        if (product.length > 0) {
+            return res.status(200).json(product);
+        } else {
+            return res.status(404).json({ message: "No products found in this price range" });
+        }
+    })
+    .catch(error => errorHandler(error, req, res));
+}

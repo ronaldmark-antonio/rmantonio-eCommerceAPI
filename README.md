@@ -32,6 +32,8 @@
 <ul>
 	<li>Add to Cart</li>
 	<li>Change product quantities</li>
+	<li>Remove products from cart</li>
+	<li>Clear cart</li>
 </ul>
 
 <h3>Features by Student-2</h3>
@@ -46,6 +48,8 @@
 	<li>Retrieve all products</li>
 	<li>Retrieve all active products</li>
 	<li>Retrieve single product</li>
+	<li>Add search for products by their names</li>
+	<li>Add search for products by price range</li>
 </ul>
 <h3>Cart Resources:</h3>
 <ul>
