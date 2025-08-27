@@ -14,10 +14,10 @@ module.exports.getCart = (req, res) => {
 
 module.exports.addToCart = (req, res) => {
     if (typeof req.body.quantity != "number" || req.body.quantity < 1) {
-        return res.status(400).json({ error: "Invalid quantity value" })
+        return res.status(400).json({ message: "Invalid quantity value" })
     }
     if (typeof req.body.subtotal != "number" || req.body.subtotal < 1) {
-        return res.status(400).json({ error: "Invalid subtotal value" })
+        return res.status(400).json({ message: "Invalid subtotal value" })
     }
 
     Cart.findOne({ userId: req.user.id })
@@ -55,13 +55,13 @@ module.exports.addToCart = (req, res) => {
 
 module.exports.updateCartQuantity = (req, res) => {
     if (typeof req.body.newQuantity != "number" || req.body.newQuantity < 1) {
-        return res.status(400).json({ error: "Invalid quantity value" })
+        return res.status(400).json({ message: "Invalid quantity value" })
     }
 
     Cart.findOne({ userId: req.user.id })
     .then((cart) => {
         if (!cart) {
-            return res.status(404).json({ error: "Cart not found" });
+            return res.status(404).json({ message: "Cart not found" });
         }
 
         productToEdit = cart.cartItems.find(product => product.productId === req.body.productId)
@@ -75,9 +75,54 @@ module.exports.updateCartQuantity = (req, res) => {
                 .then(result => res.status(200).json({
                     message: "Item quantity updated successfully",
                     updatedCart: result
-                }));
+                })).catch(err => errorHandler(err, req, res));
         } else {
-            return res.status(404).json({ error: "Item not found in cart" })
+            return res.status(404).json({ message: "Item not found in cart" })
         }
-    })
+    }).catch(err => errorHandler(err, req, res))
+}
+
+module.exports.removeFromCart = (req, res) => {
+    Cart.findOne({ userId: req.user.id })
+    .then((cart) => {
+        if (!cart) {
+            return res.status(404).json({ message: "Cart not found" });
+        }
+
+        const productId = req.params.productId;
+        if (cart.cartItems.some(product => product.productId == productId)) {
+            cart.cartItems = cart.cartItems.filter(product => product.productId != productId)
+            cart.totalPrice = cart.cartItems.reduce((accumulated, current) => accumulated.subtotal + current.subtotal)
+
+            return cart.save()
+                .then(result => res.status(200).json({
+                    message: "Item removed from cart successfully",
+                    updatedCart: result
+                })).catch(err => errorHandler(err, req, res));
+        } else {
+            return res.status(404).json({ message: "Item not found in cart" })
+        }
+    }).catch(err => errorHandler(err, req, res))
+}
+
+module.exports.clearCart = (req, res) => {
+    Cart.findOne({ userId: req.user.id })
+    .then((cart) => {
+        if (!cart) {
+            return res.status(404).json({ message: "Cart not found" });
+        }
+
+        if (cart.cartItems.length > 0) {
+            cart.cartItems = []
+            cart.totalPrice = 0
+
+            return cart.save()
+                .then(result => res.status(200).json({
+                    message: "Cart cleared successfully",
+                    updatedCart: result
+                })).catch(err => errorHandler(err, req, res));
+        } else {
+            return res.status(200).json({ message: "Cart already empty" })
+        }
+    }).catch(err => errorHandler(err, req, res))
 }
