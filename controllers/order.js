@@ -35,7 +35,7 @@ module.exports.getOrder = (req, res) => {
     return Order.find({userId: req.user.id})
     .then(order => {
         if (order.length > 0) {
-			res.status(201).json({ orders: order });
+			res.status(200).json({ orders: order });
         } 
     })
     .catch(error => errorHandler(error, req, res));
