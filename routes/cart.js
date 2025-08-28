@@ -1,7 +1,5 @@
 const express = require('express');
 const cartController = require('../controllers/cart');
-// const auth = require("../auth")
-// const { verify } = auth;
 const { verify } = require("../auth");
 
 const router = express.Router();
