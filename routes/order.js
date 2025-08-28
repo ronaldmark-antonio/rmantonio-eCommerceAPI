@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/checkout', verify, orderController.createOrder)
 router.get('/my-orders', verify, orderController.getOrder)
+router.get("/all-orders", verify, verifyAdmin, orderController.getAllOrders);
 
 module.exports = router;

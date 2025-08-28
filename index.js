@@ -26,10 +26,6 @@ mongoose.connection.once('open', () => console.log('Now connected to MongoDB Atl
 
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
-<<<<<<< HEAD
-app.use("/orders", orderRoutes);
-=======
->>>>>>> 3827979904bc7063b129bafab965b70c61cc9fcf
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 

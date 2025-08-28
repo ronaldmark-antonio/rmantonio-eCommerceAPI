@@ -39,4 +39,10 @@ module.exports.getOrder = (req, res) => {
         } 
     })
     .catch(error => errorHandler(error, req, res));
-} 
+}
+
+module.exports.getAllOrders = (req, res) => {
+    return Order.find({})
+    .then(orders => res.status(200).send(orders))
+    .catch(err => errorHandler(err, req, res));
+}
