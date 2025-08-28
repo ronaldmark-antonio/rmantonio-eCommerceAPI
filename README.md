@@ -35,6 +35,10 @@
 	<li>Remove products from cart</li>
 	<li>Clear cart</li>
 </ul>
+<h3>Order Resources:</h3>
+<ul>
+	<li>Retrieve all orders (Admin only)</li>
+</ul>
 
 <h3>Features by Student-2</h3>
 <h3>User Resources:</h3>
@@ -54,4 +58,9 @@
 <h3>Cart Resources:</h3>
 <ul>
 	<li>Retrieve user's cart</li>
+</ul>
+<h3>Order Resources:</h3>
+<ul>
+	<li>Non-admin User checkout</li>
+	<li>Retrieve authenticated user's orders</li>
 </ul>
