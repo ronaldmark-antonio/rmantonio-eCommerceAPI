@@ -3,7 +3,7 @@
   "routesPrefix": {
       "users": "/users",
       "products": "/products",
-      "orders": "/cart",
-      "cart": "/orders"
+      "orders": "/orders",
+      "cart": "/cart"
   }
 }
