@@ -5,19 +5,19 @@ module.exports.getCart = (req, res) => {
 	return Cart.findOne({ userId: req.user.id })
 	.then(cart => {
 	if (cart) {
-			return res.status(200).json({ cart: cart });
+			return res.status(200).send({ cart: cart });
 		}
-		return res.status(404).json({ message: "No cart found" });
+		return res.status(404).send({ message: "No cart found" });
 	})
 	.catch(error => errorHandler(error, req, res));
 }
 
 module.exports.addToCart = (req, res) => {
     if (typeof req.body.quantity != "number" || req.body.quantity < 1) {
-        return res.status(400).json({ message: "Invalid quantity value" })
+        return res.status(400).send({ message: "Invalid quantity value" })
     }
     if (typeof req.body.subtotal != "number" || req.body.subtotal < 1) {
-        return res.status(400).json({ message: "Invalid subtotal value" })
+        return res.status(400).send({ message: "Invalid subtotal value" })
     }
 
     Cart.findOne({ userId: req.user.id })
@@ -46,7 +46,7 @@ module.exports.addToCart = (req, res) => {
         }
         userCart.totalPrice += req.body.subtotal
         return userCart.save()
-            .then((result) => res.status(201).json({
+            .then((result) => res.status(201).send({
                 message: "Item added to cart successfully",
                 cart: result
             })).catch(error => errorHandler(error, req, res));
@@ -55,13 +55,13 @@ module.exports.addToCart = (req, res) => {
 
 module.exports.updateCartQuantity = (req, res) => {
     if (typeof req.body.newQuantity != "number" || req.body.newQuantity < 1) {
-        return res.status(400).json({ message: "Invalid quantity value" })
+        return res.status(400).send({ message: "Invalid quantity value" })
     }
 
     Cart.findOne({ userId: req.user.id })
     .then((cart) => {
         if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
+            return res.status(404).send({ message: "Cart not found" });
         }
 
         productToEdit = cart.cartItems.find(product => product.productId === req.body.productId)
@@ -72,12 +72,12 @@ module.exports.updateCartQuantity = (req, res) => {
             cart.totalPrice += productToEdit.subtotal - oldSubtotal
 
             return cart.save()
-                .then(result => res.status(200).json({
+                .then(result => res.status(200).send({
                     message: "Item quantity updated successfully",
                     updatedCart: result
                 })).catch(err => errorHandler(err, req, res));
         } else {
-            return res.status(404).json({ message: "Item not found in cart" })
+            return res.status(404).send({ message: "Item not found in cart" })
         }
     }).catch(err => errorHandler(err, req, res))
 }
@@ -86,7 +86,7 @@ module.exports.removeFromCart = (req, res) => {
     Cart.findOne({ userId: req.user.id })
     .then((cart) => {
         if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
+            return res.status(404).send({ message: "Cart not found" });
         }
 
         const productId = req.params.productId;
@@ -95,12 +95,12 @@ module.exports.removeFromCart = (req, res) => {
             cart.totalPrice = cart.cartItems.reduce((accumulated, current) => accumulated.subtotal + current.subtotal)
 
             return cart.save()
-                .then(result => res.status(200).json({
+                .then(result => res.status(200).send({
                     message: "Item removed from cart successfully",
                     updatedCart: result
                 })).catch(err => errorHandler(err, req, res));
         } else {
-            return res.status(404).json({ message: "Item not found in cart" })
+            return res.status(404).send({ message: "Item not found in cart" })
         }
     }).catch(err => errorHandler(err, req, res))
 }
@@ -109,7 +109,7 @@ module.exports.clearCart = (req, res) => {
     Cart.findOne({ userId: req.user.id })
     .then((cart) => {
         if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
+            return res.status(404).send({ message: "Cart not found" });
         }
 
         if (cart.cartItems.length > 0) {
@@ -117,12 +117,12 @@ module.exports.clearCart = (req, res) => {
             cart.totalPrice = 0
 
             return cart.save()
-                .then(result => res.status(200).json({
+                .then(result => res.status(200).send({
                     message: "Cart cleared successfully",
                     updatedCart: result
                 })).catch(err => errorHandler(err, req, res));
         } else {
-            return res.status(200).json({ message: "Cart already empty" })
+            return res.status(200).send({ message: "Cart already empty" })
         }
     }).catch(err => errorHandler(err, req, res))
 }
