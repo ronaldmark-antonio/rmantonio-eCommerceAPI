@@ -90,9 +90,9 @@ module.exports.removeFromCart = (req, res) => {
         }
 
         const productId = req.params.productId;
-        if (cart.cartItems.some(product => product.productId.toString() === productId.toString())) {
-            cart.cartItems = cart.cartItems.filter(product => product.productId.toString() !== productId.toString())
-            cart.totalPrice = cart.cartItems.reduce((accumulated, current) => accumulated + accumulated.subtotal, 0)
+        if (cart.cartItems.some(product => product.productId == productId)) {
+            cart.cartItems = cart.cartItems.filter(product => product.productId !== productId)
+            cart.totalPrice = cart.cartItems.reduce((accumulated, current) => accumulated + current.subtotal, 0)
 
             return cart.save()
                 .then(result => res.status(200).send({
