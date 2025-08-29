@@ -6,7 +6,7 @@ module.exports.createOrder = async (req, res) => {
     Cart.findOne({ userId: req.user.id })
     .then((cart) => {
 		if (!cart) {
-        	return res.status(404).json({ error: 'No Items to Checkout'});
+        	return res.status(404).send({ error: 'No Items to Checkout'});
     	} else {
     		let newOrder = new Order({
 		        userId: req.user.id,
@@ -15,7 +15,7 @@ module.exports.createOrder = async (req, res) => {
 	    	});
 
     		newOrder.save()
-    		.then(order => { return res.status(201).json({ message: "Ordered Successfully" }) })
+    		.then(order => { return res.status(201).send({ message: "Ordered Successfully" }) })
     		.catch(err => errorHandler(err, req, res));
 		}
     }).catch(err => errorHandler(err, req, res));
@@ -25,7 +25,7 @@ module.exports.getOrder = (req, res) => {
     return Order.find({userId: req.user.id})
     .then(order => {
         if (order.length > 0) {
-			res.status(200).json({ orders: order });
+			res.status(200).send({ orders: order });
         } 
     })
     .catch(error => errorHandler(error, req, res));
