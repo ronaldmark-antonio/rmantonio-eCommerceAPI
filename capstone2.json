@@ -1,0 +1,9 @@
+{
+  "url": "https://86cmr8pnej.execute-api.us-west-2.amazonaws.com/production",
+  "routesPrefix": {
+      "users": "/users",
+      "products": "/products",
+      "orders": "/cart",
+      "cart": "/orders"
+  }
+}

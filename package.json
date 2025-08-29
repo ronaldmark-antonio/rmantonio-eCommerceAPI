@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "bcrypt": "^6.0.0",
+    "@codegenie/serverless-express": "^4.17.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
@@ -10,8 +10,9 @@
   },
   "name": "csp2-b561-senas-antonio",
   "description": "Capstone 2 Demo App Overview:\r Application Name: FusionTechPro (Gadget E-Commerce API)",
+  "type": "commonjs",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lambda.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
