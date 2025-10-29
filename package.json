@@ -1,9 +1,13 @@
 {
   "name": "rmantonio-ecommerceapi",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "FusionTechPro (Gadget E-Commerce API)",
+  "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@codegenie/serverless-express": "^4.17.0",
@@ -13,14 +17,6 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.2"
-  },
-  "name": "csp2-b561-senas-antonio",
-  "description": "Capstone 2 Demo App Overview:\r Application Name: FusionTechPro (Gadget E-Commerce API)",
-  "type": "commonjs",
-  "version": "1.0.0",
-  "main": "lambda.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
