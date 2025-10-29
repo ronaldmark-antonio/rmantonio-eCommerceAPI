@@ -1,5 +1,5 @@
 {
-  "url": "https://86cmr8pnej.execute-api.us-west-2.amazonaws.com/production",
+  "url": "",
   "routesPrefix": {
       "users": "/users",
       "products": "/products",
