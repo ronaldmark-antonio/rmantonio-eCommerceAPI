@@ -11,20 +11,20 @@ module.exports.registerUser = async (req, res) => {
       return res.status(400).send(false);
     } 
     else if (!req.body.email.includes("@")) {
-      return res.status(400).send({ error: 'Email invalid' });
+      return res.status(400).send({ error: 'Email address is invalid' });
     } 
     else if (req.body.password.length < 8) {
       return res.status(400).send({ error: 'Password must be at least 8 characters' });
     } 
     else if (req.body.mobileNo.length !== 11) {
-      return res.status(400).send({ error: 'Mobile number invalid' });
+      return res.status(400).send({ error: 'Mobile number is invalid' });
     }
 
     const existingUser = await User.findOne({ email: req.body.email });
 
     if (existingUser) {
       return res.status(409).send({
-        error: "Email already exists"
+        error: "Email address is already exists"
       });
     }
 
