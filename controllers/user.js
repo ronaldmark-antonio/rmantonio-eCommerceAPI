@@ -10,13 +10,13 @@ module.exports.registerUser = async (req, res) => {
     if (typeof req.body.firstName !== 'string' || typeof req.body.lastName !== 'string') {
       return res.status(400).send(false);
     } 
-    if (!req.body.email.includes("@")) {
+    else if (!req.body.email.includes("@")) {
       return res.status(400).send({ error: 'Email invalid' });
     } 
-    if (req.body.password.length < 8) {
+    else if (req.body.password.length < 8) {
       return res.status(400).send({ error: 'Password must be at least 8 characters' });
     } 
-    if (req.body.mobileNo.length !== 11) {
+    else if (req.body.mobileNo.length !== 11) {
       return res.status(400).send({ error: 'Mobile number invalid' });
     }
 
