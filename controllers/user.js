@@ -5,29 +5,46 @@ const auth = require('../auth');
 
 const { errorHandler } = auth;
 
-module.exports.registerUser = (req, res) => {
-	if (typeof req.body.firstName !== 'string' || typeof req.body.lastName !== 'string') {
-        return res.status(400).send(false);
-    } else if (!req.body.email.includes("@")){
-        return res.status(400).send({error: 'Email invalid'});
-    } else if (req.body.password.length < 8) {
-        return res.status(400).send({error: 'Password must be atleast 8 characters'});
-    } else if (req.body.mobileNo.length !== 11){
-        return res.status(400).send({error: 'Mobile number invalid'});
-    } else {
-        let newUser = new User({
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
-            email : req.body.email,
-            password : bcrypt.hashSync(req.body.password, 10),
-            mobileNo : req.body.mobileNo
-        })
-        return newUser.save()
-        .then((result) => res.status(201).send({
-            message: 'Registered Successfully'
-        }))
-        .catch(error => errorHandler(error, req, res));
+module.exports.registerUser = async (req, res) => {
+  try {
+    if (typeof req.body.firstName !== 'string' || typeof req.body.lastName !== 'string') {
+      return res.status(400).send(false);
+    } 
+    if (!req.body.email.includes("@")) {
+      return res.status(400).send({ error: 'Email invalid' });
+    } 
+    if (req.body.password.length < 8) {
+      return res.status(400).send({ error: 'Password must be at least 8 characters' });
+    } 
+    if (req.body.mobileNo.length !== 11) {
+      return res.status(400).send({ error: 'Mobile number invalid' });
     }
+
+    const existingUser = await User.findOne({ email: req.body.email });
+
+    if (existingUser) {
+      return res.status(409).send({
+        error: "Email already exists"
+      });
+    }
+
+    const newUser = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10),
+      mobileNo: req.body.mobileNo
+    });
+
+    await newUser.save();
+
+    return res.status(201).send({
+      message: "Registered successfully!"
+    });
+
+  } catch (error) {
+    return errorHandler(error, req, res);
+  }
 };
 
 module.exports.loginUser = (req, res) => {
