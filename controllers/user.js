@@ -39,7 +39,7 @@ module.exports.registerUser = async (req, res) => {
     await newUser.save();
 
     return res.status(201).send({
-      message: "Registered successfully!"
+      message: "Registered successfully"
     });
 
   } catch (error) {
@@ -49,29 +49,29 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = (req, res) => {
     if (!req.body.email || !req.body.password) {
-        return res.status(400).send({ error: "Email and password must be provided" });
+        return res.status(400).send({ error: "Email address and password must be provided" });
     }
     if (!req.body.email.includes("@")) {
-        return res.status(400).send({ error: "Invalid Email" });
+        return res.status(400).send({ error: "Invalid email address" });
     }
 
     return User.findOne({ email: req.body.email })
         .then(result => {
             if (!result) {
-                return res.status(404).send({ error: "No Email Found" });
+                return res.status(404).send({ error: "No email address found" });
             }
             const isPasswordCorrect = bcrypt.compareSync(req.body.password, result.password);
             if (isPasswordCorrect) {
                 return res.status(200).send({ access: auth.createAccessToken(result) });
             } else {
-                return res.status(401).send({ error: "Email and password do not match" });
+                return res.status(401).send({ error: "Email address and password do not match" });
             }
         })
         .catch(error => errorHandler(error, req, res));
 }
 
 module.exports.getUserDetails = (req, res) => {
-    return User.findById(req.user.id).select("-password")
+    return User.findById(req.user.id).select("password")
         .then(user => {
             if (!user) {
                 return res.status(404).send({error: "User not found."});
