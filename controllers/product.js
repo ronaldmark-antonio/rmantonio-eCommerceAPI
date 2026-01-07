@@ -3,10 +3,10 @@ const { errorHandler } = require("../auth");
 
 module.exports.createProduct = (req, res) => {
 
-  const normalizeName = value =>
+  let normalizeName = (value) =>
     value.toLowerCase().replace(/[\s\-_]+/g, "").trim();
 
-  const incomingNormalizedName = normalizeName(req.body.name);
+  let incomingNormalizedName = normalizeName(req.body.name);
 
   let newProduct = new Product({
     name: req.body.name.trim(),
@@ -17,7 +17,7 @@ module.exports.createProduct = (req, res) => {
   Product.find({}, { name: 1 })
     .then(products => {
 
-      const existingProduct = products.find(product =>
+      let existingProduct = products.find(product =>
         normalizeName(product.name) === incomingNormalizedName
       );
 
@@ -32,6 +32,7 @@ module.exports.createProduct = (req, res) => {
     })
     .catch(error => errorHandler(error, req, res));
 };
+
 
 module.exports.getAllProducts = (req, res) => {
     return Product.find({})
