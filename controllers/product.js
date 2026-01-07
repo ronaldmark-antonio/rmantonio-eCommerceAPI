@@ -2,10 +2,11 @@ const Product = require('../models/Product');
 const { errorHandler } = require("../auth");
 
 module.exports.createProduct = (req, res) => {
-  let normalizeName = (value) =>
-    value.toLowerCase().replace(/\s+/g, "").trim();
 
-  let incomingNormalizedName = normalizeName(req.body.name);
+  const normalizeName = value =>
+    value.toLowerCase().replace(/[\s\-_]+/g, "").trim();
+
+  const incomingNormalizedName = normalizeName(req.body.name);
 
   let newProduct = new Product({
     name: req.body.name.trim(),
@@ -16,7 +17,7 @@ module.exports.createProduct = (req, res) => {
   Product.find({}, { name: 1 })
     .then(products => {
 
-      let existingProduct = products.find(product =>
+      const existingProduct = products.find(product =>
         normalizeName(product.name) === incomingNormalizedName
       );
 
