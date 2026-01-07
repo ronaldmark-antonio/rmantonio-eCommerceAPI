@@ -2,24 +2,35 @@ const Product = require('../models/Product');
 const { errorHandler } = require("../auth");
 
 module.exports.createProduct = (req, res) => {
-	let newProduct = new Product({
-		name: req.body.name,
-		description: req.body.description,
-		price: req.body.price
-	});
+  let normalizeName = (value) =>
+    value.toLowerCase().replace(/\s+/g, "").trim();
 
-	Product.findOne({ name: req.body.name })
-	.then(existingProduct => {
-		if (existingProduct) {
-			return res.status(409).send({ error: 'Product already exists' })
-		} else {
-			return newProduct.save()
-			.then(product => res.status(201).send(product))
-			.catch(error => errorHandler(error, req, res));
-		}
-	})
-	.catch(error => errorHandler(error, req, res))
-}
+  let incomingNormalizedName = normalizeName(req.body.name);
+
+  let newProduct = new Product({
+    name: req.body.name.trim(),
+    description: req.body.description,
+    price: req.body.price
+  });
+
+  Product.find({}, { name: 1 })
+    .then(products => {
+
+      let existingProduct = products.find(product =>
+        normalizeName(product.name) === incomingNormalizedName
+      );
+
+      if (existingProduct) {
+        return res.status(409).send({ error: "Product already exists" });
+      }
+
+      return newProduct.save()
+        .then(product => res.status(201).send(product))
+        .catch(error => errorHandler(error, req, res));
+
+    })
+    .catch(error => errorHandler(error, req, res));
+};
 
 module.exports.getAllProducts = (req, res) => {
     return Product.find({})
