@@ -94,8 +94,9 @@ module.exports.updateProduct = (req, res) => {
       );
 
       if (duplicate) {
-        return res.status(409).send({
-          error: "Another product with this name already exists"
+        return Promise.reject({
+          status: 409,
+          message: "Another product with this name already exists"
         });
       }
 
@@ -119,7 +120,20 @@ module.exports.updateProduct = (req, res) => {
         message: "Product updated successfully"
       });
     })
-    .catch(error => errorHandler(error, req, res));
+    .catch(err => {
+      if (err.status === 409) {
+        return res.status(409).send({ error: err.message });
+      }
+
+      // Mongo duplicate key safety
+      if (err.code === 11000) {
+        return res.status(409).send({
+          error: "Another product with this name already exists"
+        });
+      }
+
+      return errorHandler(err, req, res);
+    });
 };
 
 module.exports.archiveProduct = (req, res) => {
