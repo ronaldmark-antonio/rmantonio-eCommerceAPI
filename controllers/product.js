@@ -82,13 +82,12 @@ module.exports.updateProduct = async (req, res) => {
     const { name, description, price } = req.body;
     const productId = req.params.productId;
 
-    // Case-insensitive duplicate check (EXCLUDE current product)
-    const duplicate = await Product.findOne({
+    const existingProduct = await Product.findOne({
       name: { $regex: `^${name}$`, $options: "i" },
       _id: { $ne: productId }
     });
 
-    if (duplicate) {
+    if (existingProduct) {
       return res.status(409).send({
         error: "Another product with this name already exists"
       });
@@ -96,11 +95,7 @@ module.exports.updateProduct = async (req, res) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      {
-        name: name.trim(),       // keep original casing user typed
-        description,
-        price
-      },
+      { name, description, price },
       { new: true }
     );
 
@@ -110,17 +105,11 @@ module.exports.updateProduct = async (req, res) => {
 
     return res.status(200).send({
       success: true,
-      message: "Product updated successfully"
+      message: "Product updated successfully",
+      product: updatedProduct
     });
 
   } catch (err) {
-    // Mongo unique index safety net
-    if (err.code === 11000) {
-      return res.status(409).send({
-        error: "Another product with this name already exists"
-      });
-    }
-
     return errorHandler(err, req, res);
   }
 };
