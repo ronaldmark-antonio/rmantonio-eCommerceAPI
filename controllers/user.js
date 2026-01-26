@@ -84,47 +84,15 @@ module.exports.getUserDetails = (req, res) => {
         .catch(error => errorHandler(error, req, res));
 }
 
-module.exports.updatePassword = async (req, res) => {
-  try {
-    const { newPassword } = req.body;
+module.exports.updatePassword= (req, res) => {
+    const newPassword = req.body.newPassword;
+    const newHashedPassword = bcrypt.hashSync(newPassword, 10);
 
-    if (!newPassword) {
-      return res.status(400).send({ error: "New password is required" });
-    }
-
-    if (newPassword.length < 8) {
-      return res.status(400).send({
-        error: "Password must be at least 8 characters"
-      });
-    }
-
-    const user = await User.findById(req.user.id);
-
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-
-    const isSamePassword = bcrypt.compareSync(newPassword, user.password);
-
-    if (isSamePassword) {
-      return res.status(400).send({
-        error: "New password must be different from the old password"
-      });
-    }
-
-    const hashedPassword = bcrypt.hashSync(newPassword, 10);
-
-    user.password = hashedPassword;
-    await user.save();
-
-    return res.status(200).send({
-      message: "Password reset successfully"
-    });
-
-  } catch (error) {
-    return errorHandler(error, req, res);
-  }
-};
+    return User.findByIdAndUpdate(req.user.id, { password: newHashedPassword })
+    .then(newPassword => {res.status(201).send({ message: "Password reset successfully." })
+    })
+    .catch(error => errorHandler(error, req, res));  
+}
 
 module.exports.setAsAdmin = (req, res) => {
     User.findByIdAndUpdate(

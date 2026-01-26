@@ -77,24 +77,42 @@ module.exports.getProduct = (req, res) => {
     .catch(error => errorHandler(error, req, res)); 
 };
 
-module.exports.updateProduct = (req, res) => {
-    return Product.findByIdAndUpdate(
-        req.params.productId,
-        {
-            name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-        }
-    ).then((result) => {
-        if (!result) {
-            return res.status(404).send({ error: "Product not found" });
-        }
-        return res.status(200).send({
-            success: true,
-            message: "Product updated successfully"
-        });
-    }).catch(err => errorHandler(err, req, res));
-}
+module.exports.updateProduct = async (req, res) => {
+  try {
+    const { name, description, price } = req.body;
+    const productId = req.params.productId;
+
+    const existingProduct = await Product.findOne({
+      name: { $regex: `^${name}$`, $options: "i" },
+      _id: { $ne: productId }
+    });
+
+    if (existingProduct) {
+      return res.status(409).send({
+        error: "Another product with this name already exists"
+      });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { name, description, price },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "Product updated successfully",
+      product: updatedProduct
+    });
+
+  } catch (err) {
+    return errorHandler(err, req, res);
+  }
+};
 
 module.exports.archiveProduct = (req, res) => {
     return Product.findByIdAndUpdate(
