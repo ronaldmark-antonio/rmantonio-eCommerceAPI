@@ -77,41 +77,49 @@ module.exports.getProduct = (req, res) => {
     .catch(error => errorHandler(error, req, res)); 
 };
 
-module.exports.updateProduct = async (req, res) => {
-  try {
-    const { name, description, price } = req.body;
-    const productId = req.params.productId;
+module.exports.updateProduct = (req, res) => {
 
-    const existingProduct = await Product.findOne({
-      name: { $regex: `^${name}$`, $options: "i" },
-      _id: { $ne: productId }
-    });
+  const normalizeName = (value) =>
+    value.toLowerCase().replace(/[\s\-_]+/g, "").trim();
 
-    if (existingProduct) {
-      return res.status(409).send({
-        error: "Another product with this name already exists"
+  const incomingNormalizedName = normalizeName(req.body.name);
+  const productId = req.params.productId;
+
+  Product.find({}, { name: 1 })
+    .then(products => {
+
+      const duplicate = products.find(product =>
+        normalizeName(product.name) === incomingNormalizedName &&
+        product._id.toString() !== productId
+      );
+
+      if (duplicate) {
+        return res.status(409).send({
+          error: "Another product with this name already exists"
+        });
+      }
+
+      return Product.findByIdAndUpdate(
+        productId,
+        {
+          name: req.body.name.trim(),
+          description: req.body.description,
+          price: req.body.price
+        },
+        { new: true }
+      );
+    })
+    .then(updatedProduct => {
+      if (!updatedProduct) {
+        return res.status(404).send({ error: "Product not found" });
+      }
+
+      return res.status(200).send({
+        success: true,
+        message: "Product updated successfully"
       });
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      { name, description, price },
-      { new: true }
-    );
-
-    if (!updatedProduct) {
-      return res.status(404).send({ error: "Product not found" });
-    }
-
-    return res.status(200).send({
-      success: true,
-      message: "Product updated successfully",
-      product: updatedProduct
-    });
-
-  } catch (err) {
-    return errorHandler(err, req, res);
-  }
+    })
+    .catch(error => errorHandler(error, req, res));
 };
 
 module.exports.archiveProduct = (req, res) => {
