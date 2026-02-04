@@ -33,6 +33,8 @@ module.exports.getOrder = (req, res) => {
 
 module.exports.getAllOrders = (req, res) => {
     return Order.find({})
-    .then(orders => res.status(200).send(orders))
-    .catch(err => errorHandler(err, req, res));
+      .populate("userId", "firstName lastName email")
+      .then(orders => res.status(200).send(orders))
+      .catch(err => errorHandler(err, req, res));
 }
+
